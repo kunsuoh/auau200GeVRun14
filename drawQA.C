@@ -1106,7 +1106,7 @@ int drawQA(int selCent = 1,unsigned short opt = 0x800){
 
     // hadrons dca distribution by ZDCx
     if (opt>>12 & 1) {
-        TString infilename = "Ana_6.root";
+        TString infilename = "Ana_7.root";
         //        infilename="out_166_15166046.root";
         TFile * infile = new TFile(infilename);
         TTree * tPion = (TTree*)infile->Get("tIncPion");
