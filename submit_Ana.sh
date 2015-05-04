@@ -12,6 +12,8 @@ for filename in $(cat fileLists/AnaList); do
       ./run_Ana_$filename.csh
    
       mv run_Ana_$filename.csh script/. 
+   else 
+      echo "no input file: Out/$filename.picoNpe.root"
    fi
 done   
 
