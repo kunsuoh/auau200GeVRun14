@@ -18,6 +18,7 @@ for filename in $(cat fileLists/AnaList); do
       fi
       mv run_Ana_$count2.csh script/. 
       count=$(($count+1))
+      echo $count
    else 
       echo "no input file: Out/$filename.picoNpe.root"
    fi
