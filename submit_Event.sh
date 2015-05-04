@@ -12,7 +12,7 @@ for filename in $(cat fileLists/Run14/AuAu/200GeV/picoLists/runs/picoList_$1.lis
    echo  "\",\"Out/$1_$count\")">>run_$1.csh
    echo "EOF">>run_$1.csh
    echo $1 $count
-   count=$($count+1)
+   count=$(($count+1))
 done   
 #qsub -hard -l h_vmem=4G -l scratchfree=500,gscratchio=1,projectio=1 -o Log/job_$1.log -e Log/job_$1.err run_$filename.csh
 mv run_$1.csh script/
