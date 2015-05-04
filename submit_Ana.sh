@@ -15,10 +15,11 @@ for filename in $(cat fileLists/AnaList); do
       #qsub -hard -l h_vmem=4G -l scratchfree=500,gscratchio=1,projectio=1 -o Log/job_Ana_$filename.log -e Log/job_Ana_$filename.err run_Ana_$count2.csh
       
       if [ $(($count%100)) -eq "99" ]; then 
-         ./run_Ana_$count2.csh
          echo "Submit run_Ana_$count2.csh" 
+         ./run_Ana_$count2.csh
+         mv run_Ana_$count2.csh script/. 
       fi
-      mv run_Ana_$count2.csh script/. 
+
       count=$(($count+1))
       echo $count
    #else 
