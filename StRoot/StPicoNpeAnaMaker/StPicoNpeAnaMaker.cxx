@@ -206,9 +206,9 @@ Int_t StPicoNpeAnaMaker::Finish()
     hHFTOuter->Write();
     hTrigger->Write();
     
-    tInc->Write();
-    tIncPion->Write();
-    tPhE->Write();
+ //   tInc->Write();
+ //   tIncPion->Write();
+ //   tPhE->Write();
     tPureE->Write();
     
     mOutputFile->Close();
@@ -265,7 +265,7 @@ Int_t StPicoNpeAnaMaker::Make()
     
     // -------------- USER ANALYSIS -------------------------
     StThreeVectorF const pVtx = picoDst->event()->primaryVertex();
-    
+  /*  
     // Inclusive hadrons with StPicoTrack
     UInt_t nTracks = picoDst->numberOfTracks();
     for (unsigned short iTrack = 0; iTrack < nTracks; ++iTrack) {
@@ -386,7 +386,7 @@ Int_t StPicoNpeAnaMaker::Make()
         }
         tInc->Fill();
     }
-    
+  */  
     float const bField = picoDst->event()->bField();
     
     // Photonic Electron
@@ -468,8 +468,8 @@ Int_t StPicoNpeAnaMaker::Make()
             phiTowDist = Emc->phiTowDist();
         }
         if(isGoodPureElectron(epair)) tPureE->Fill();
-        if(!isGoodTofTrack(electron) && !isGoodEmcTrack(electron)) continue;
-        tPhE->Fill();
+ //       if(!isGoodTofTrack(electron) && !isGoodEmcTrack(electron)) continue;
+ //       tPhE->Fill();
     }
     return kStOK;
 }
@@ -477,11 +477,12 @@ Int_t StPicoNpeAnaMaker::Make()
 bool StPicoNpeAnaMaker::isGoodPureElectron(StElectronPair const* const epair) const
 {
     if(!epair) return false;
-    
+        
     StPicoTrack const* electron = mPicoDstMaker->picoDst()->track(epair->electronIdx());
     StPicoTrack const* partner = mPicoDstMaker->picoDst()->track(epair->partnerIdx());
     
     return
+    epair->electronIdx() < epair->partnerIdx() &&
     isGoodElectron(electron) &&
     isGoodElectron(partner) &&
     epair->pairMass() < cutsAna::pureElectronMass &&
