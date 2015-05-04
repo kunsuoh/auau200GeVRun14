@@ -1,5 +1,5 @@
 #! /bin/sh
-for filename in $(cat fileLists/Analist); do
+for filename in $(cat fileLists/AnaList); do
    cp ./run.csh ./run_Ana_$filename.csh
  
    echo "root4star -l -b <<EOF">>run_Ana_$filename.csh
