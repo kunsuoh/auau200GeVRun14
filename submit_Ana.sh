@@ -25,5 +25,6 @@ for filename in $(cat fileLists/AnaList); do
       #echo "no input file: Out/$filename.picoNpe.root"
    fi
 done 
-./run_Ana_$count2.csh
-
+#./run_Ana_$count2.csh
+qsub -hard -l h_vmem=4G -l scratchfree=500,gscratchio=1,projectio=1 -o Log/job_Ana_$count2.log -e Log/job_Ana_$count2.err run_Ana_$count2.csh
+mv run_Ana_$count2.csh script/. 
