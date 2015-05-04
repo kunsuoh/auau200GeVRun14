@@ -5,7 +5,9 @@ count=0
 cp ./run.csh ./run_$1.csh
 for filename in $(cat fileLists/Run14/AuAu/200GeV/picoLists/runs/picoList_$1.list); do
    echo $filename >> $1_$count.list
-   rm fileLists/Run14/AuAu/200GeV/picoNpeLists/runs/$1_$count.list
+   if [ -f fileLists/Run14/AuAu/200GeV/picoNpeLists/runs/$1_$count.list ]; then
+      rm fileLists/Run14/AuAu/200GeV/picoNpeLists/runs/$1_$count.list
+   fi
    echo Out/$1_$count.picoNpe.root >> fileLists/Run14/AuAu/200GeV/picoNpeLists/runs/$1_$count.list
    echo "root4star -l -b <<EOF">>run_$1.csh
    echo -n ".x runPicoNpeEventMaker.C(\"script/">>run_$1.csh
