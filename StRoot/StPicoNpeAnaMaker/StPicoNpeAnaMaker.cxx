@@ -412,11 +412,14 @@ Int_t StPicoNpeAnaMaker::Make()
         StPhysicalHelixD eHelix = electron->dcaGeometry().helix();
         
         pairMass = epairFourMom.m();
+        pairDca = epair->pairDca();
+        
+        if (pairMass > cutsAna::pureElectronMass && pairDca > cutsAna::pureElectronDca) continue;
+        
         pairAngle3d = electronMomAtDca.angle(partnerMomAtDca);
         pairAnglePhi = fabs(electronMomAtDca.phi() - partnerMomAtDca.phi());
         pairAngleTheta = fabs(electronMomAtDca.theta() - partnerMomAtDca.theta());
         pairCharge = electron->charge()+partner->charge();
-        pairDca = epair->pairDca();
         pairPositionX = epair->positionX();
         pairPositionY = epair->positionY();
         
