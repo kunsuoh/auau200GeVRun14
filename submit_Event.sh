@@ -11,7 +11,7 @@ for filename in $(cat fileLists/Run14/AuAu/200GeV/picoLists/runs/picoList_$1.lis
    echo -n $1_$count.list>>run_$1.csh
    echo  "\",\"Out/$1_$count\")">>run_$1.csh
    echo "EOF">>run_$1.csh
-   echo $1 $count
+   #echo $1 $count
    mv $1_$count.list script/
    count=$(($count+1))
 done   
