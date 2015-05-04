@@ -67,7 +67,7 @@ Int_t StPicoNpeAnaMaker::Init()
     hHFTInnerOuter = new TH2F("hHFTInnerOuter","hHFTInnerOuter",1000,0,30000,1000,0,30000);
     hHFTInner = new TH1F("hHFTInner","hHFTInner",1000,0,30000);
     hHFTOuter = new TH1F("hHFTOuter","hHFTOuter",1000,0,30000);
-    hTrigger = new TH1I("hTrigger","hTrigger",40,0,40);
+    hTrigger = new TH1I("hTrigger","hTrigger",30,0,30);
     
     int bins[4] =   {20, 1000,   289, 800};
     double mins[4] = {-1, 0,      -13, -0.2};
