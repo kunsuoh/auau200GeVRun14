@@ -18,7 +18,7 @@ double ptbin2[nbin+1] = {0.2, 0.3, 0.4, 0.5, 0.7, 0.8, 1.0, 1.5, 2.5, 3.5, 5, 7,
 int centbin[10] = {11,23,44,77,125,190,275,381,443,650}; // Guannan Xie's definition at HF PWG meeting Apr. 23
 double zdcxbin[7] = {15000, 20000, 25000, 30000, 35000, 40000, 45000};
 
-int drawQA(int selCent = 1,unsigned short opt = 0x800){
+int drawQA(int selCent = 1,unsigned short opt = 0x400){
     
     if (opt>>0 & 1) {
         TNtuple * ntuple = (TNtuple*)infile->Get("nt");
@@ -774,7 +774,8 @@ int drawQA(int selCent = 1,unsigned short opt = 0x800){
     
     // hadrons dca distribution by pT
     if (opt>>10 & 1) {
-        TString infilename = "Ana_6.root";
+        cout << "hadrons dca distribution by pT. " << endl; 
+        TString infilename = "Ana_7.root";
 //        infilename="out_166_15166046.root";
         TFile * infile = new TFile(infilename);
         TTree * tPion = (TTree*)infile->Get("tIncPion");
@@ -813,7 +814,7 @@ int drawQA(int selCent = 1,unsigned short opt = 0x800){
         
         
         for (int i=0; i<nbin; i++) {
-            TString cutE = baseCut + " && abs(nsige) < 2";
+            TString cutE = baseCut + " && nsige > 0 && ((pt < 1. && abs(1-beta) < 0.025) || pt > 1.)";
             TString cutPion = baseCut;
 
             cPion[i] = new TCanvas(Form("cPion%d",i),Form("cPion%d",i),0,0,500,400);
