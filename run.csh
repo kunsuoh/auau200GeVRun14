@@ -7,5 +7,5 @@
 
 starver SL15c
 
-cd /global/homes/k/kunsu/Work_HFT/auau200GeVRun14
+cd /global/homes/k/kunsu/auau200GeVRun14_test
 
