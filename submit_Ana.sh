@@ -3,7 +3,7 @@ count=0
 for filename in $(cat fileLists/AnaList); do
    count2=$(($count/100))
 
-   if [ -s $filename ]; then
+   if [ -f $filename ]; then
       filesize=$(wc -c "Out/$filename.picoNpe.hists.root" | cut -f 1 -d ' ')
       if [ $filesize -gt 300 ]; then
          if [ $(($count%100)) -eq "0" ]; then 
