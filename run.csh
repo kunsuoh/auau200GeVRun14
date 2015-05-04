@@ -6,6 +6,5 @@
 #source ~/.cshrc
 
 starver SL15c
-
 cd /global/homes/k/kunsu/auau200GeVRun14_test
 
