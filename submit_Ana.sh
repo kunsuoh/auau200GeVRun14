@@ -11,9 +11,7 @@ for filename in $(cat fileLists/AnaList); do
             echo "Make run_Ana_$count2.csh"
          fi
          echo "root4star -l -b <<EOF">>run_Ana_$count2.csh
-         echo -n ".x runPicoNpeAnaMaker.C(\"">>run_Ana_$count2.csh
-         echo -n $filename>>run_Ana_$count2.csh
-         echo  "\")">>run_Ana_$count2.csh
+         echo ".x runPicoNpeAnaMaker.C(\"$filename\")">>run_Ana_$count2.csh
          echo "EOF">>run_Ana_$count2.csh
          if [ $(($count%100)) -eq "99" ]; then 
             echo "Submit run_Ana_$count2.csh" 
