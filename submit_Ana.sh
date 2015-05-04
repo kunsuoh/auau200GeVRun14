@@ -21,5 +21,6 @@ for filename in $(cat fileLists/AnaList); do
    else 
       echo "no input file: Out/$filename.picoNpe.root"
    fi
-done   
+done 
+./run_Ana_$count2.csh
 
