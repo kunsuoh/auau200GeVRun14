@@ -20,8 +20,8 @@ void runPicoNpeAnaMaker(TString Npelist = "test_npe.list",TString outFileName = 
     
     chain = new StChain();
     
-    StPicoDstMaker* picoDstMaker = new StPicoDstMaker(0,"fileLists/PicoList/picoList_" + Npelist + ".list","picoDstMaker");
-    StPicoNpeAnaMaker*  picoNpeAnaMaker = new StPicoNpeAnaMaker("picoNpeAnaMaker","fileLists/AnaList/"+Npelist+".list",outFileName.Data(),picoDstMaker);
+    StPicoDstMaker* picoDstMaker = new StPicoDstMaker(0,"script/" + Npelist + ".list","picoDstMaker");
+    StPicoNpeAnaMaker*  picoNpeAnaMaker = new StPicoNpeAnaMaker("picoNpeAnaMaker","fileLists/Run14/AuAu/200GeV/picoNpeLists/runs/"+Npelist+".list",outFileName.Data(),picoDstMaker);
     
     // -------------- USER variables -------------------------
     // add your cuts here.
