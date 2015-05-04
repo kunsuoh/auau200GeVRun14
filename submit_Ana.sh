@@ -3,7 +3,7 @@ count=0
 for filename in $(cat fileLists/AnaList); do
    count2=$(($count/100))
    if [ -f Out/$filename.picoNpe.root ]; then
-      if [ $(($count/100)) -eq 99 ]; then 
+      if [ $(($count/100)) -eq 0 ]; then 
          cp ./run.csh ./run_Ana_$count2.csh
       fi
       echo "root4star -l -b <<EOF">>run_Ana_$count2.csh
