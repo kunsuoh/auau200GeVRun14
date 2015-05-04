@@ -5,6 +5,7 @@ for filename in $(cat fileLists/AnaList); do
    if [ -f Out/$filename.picoNpe.root ]; then
       if [ $(($count%100)) -eq "0" ]; then 
          cp ./run.csh ./run_Ana_$count2.csh
+         echo "Make run_Ana_$count2.csh"
       fi
       echo "root4star -l -b <<EOF">>run_Ana_$count2.csh
       echo -n ".x runPicoNpeAnaMaker.C(\"">>run_Ana_$count2.csh
@@ -15,12 +16,13 @@ for filename in $(cat fileLists/AnaList); do
       
       if [ $(($count%100)) -eq "99" ]; then 
          ./run_Ana_$count2.csh
+         echo "Submit run_Ana_$count2.csh" 
       fi
       mv run_Ana_$count2.csh script/. 
       count=$(($count+1))
       echo $count
    else 
-      echo "no input file: Out/$filename.picoNpe.root"
+   #   echo "no input file: Out/$filename.picoNpe.root"
    fi
 done 
 ./run_Ana_$count2.csh
