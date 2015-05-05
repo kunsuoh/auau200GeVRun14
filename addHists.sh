@@ -1,5 +1,7 @@
 #! /bin/sh
 count=0
+rm hists_tmp.root hists.root
+
 for filename in $(cat fileLists/AnaList); do
 	if [ -f Out/$filename.picoNpe.root ]; then
     	filesize=$(wc -c "Out/$filename.picoNpe.hists.root" | cut -f 1 -d ' ')
