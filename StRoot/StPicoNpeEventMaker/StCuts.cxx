@@ -32,6 +32,7 @@ namespace cuts
     // tree electron pair cuts
     float const pairMass = 0.2;
     float const pairMassHigh = 0.4;
+    float const pairHighPt = 2.;
     float const pairDca = 1;
     float const positionX = 200.;
     float const positionY = 200.;

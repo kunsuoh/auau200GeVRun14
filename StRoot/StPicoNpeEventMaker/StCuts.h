@@ -34,6 +34,7 @@ namespace cuts
     // tree electron pair cuts
     extern float const pairMass;
     extern float const pairMassHigh;
+    extern float const pairHighPt;
     extern float const pairDca;
     extern float const positionX;
     extern float const positionY;
