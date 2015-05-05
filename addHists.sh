@@ -12,6 +12,7 @@ for filename in $(cat fileLists/AnaList); do
 				hadd hists_tmp.root Out/$filename.picoNpe.hists.root hists.root
 				mv hists_tmp.root hists.root
 			fi
+			count=$(($count+1))
    		fi
    fi
 done 
