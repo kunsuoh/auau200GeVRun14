@@ -435,8 +435,8 @@ Int_t StPicoNpeAnaMaker::Make()
         e1 = std::numeric_limits<float>::quiet_NaN();
         e2 = std::numeric_limits<float>::quiet_NaN();
         e3 = std::numeric_limits<float>::quiet_NaN();
-        nphi = std::numeric_limits<unsigned short>::quiet_NaN();
-        neta = std::numeric_limits<unsigned short>::quiet_NaN();
+        nphi = std::numeric_limits<unsigned char>::quiet_NaN();
+        neta = std::numeric_limits<unsigned char>::quiet_NaN();
         phiDist = std::numeric_limits<float>::quiet_NaN();
         zDist = std::numeric_limits<float>::quiet_NaN();
         etaTowDist = std::numeric_limits<float>::quiet_NaN();
