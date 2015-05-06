@@ -395,11 +395,14 @@ Int_t StPicoNpeAnaMaker::Make()
     {
         // this is an example of how to get the ElectronPair pairs and their corresponsing tracks
         StElectronPair const* epair = (StElectronPair*)aElectronPair->At(idx);
-        if(!isGoodPair(epair)) continue;
+        if ( !isGoodPair(epair) ) continue;
+        pairMass = epair->pairMass();
+        pairDca = epair->pairDca();
+        if ( pairMass > cutsAna::pureElectronMass && pairDca > cutsAna::pureElectronDca ) continue;
         
         StPicoTrack const* electron = picoDst->track(epair->electronIdx());
         StPicoTrack const* partner = picoDst->track(epair->partnerIdx());
-        
+
         // calculate Lorentz vector of electron-partner pair
         StPhysicalHelixD electronHelix = electron->dcaGeometry().helix();
         StPhysicalHelixD partnerHelix = partner->dcaGeometry().helix();
@@ -412,10 +415,6 @@ Int_t StPicoNpeAnaMaker::Make()
         StPhysicalHelixD eHelix = electron->dcaGeometry().helix();
         
         pairMass = epairFourMom.m();
-        pairDca = epair->pairDca();
-        
-        if (pairMass > cutsAna::pureElectronMass && pairDca > cutsAna::pureElectronDca) continue;
-        
         pairAngle3d = electronMomAtDca.angle(partnerMomAtDca);
         pairAnglePhi = fabs(electronMomAtDca.phi() - partnerMomAtDca.phi());
         pairAngleTheta = fabs(electronMomAtDca.theta() - partnerMomAtDca.theta());
@@ -456,7 +455,8 @@ Int_t StPicoNpeAnaMaker::Make()
                 beta = 1./newBeta;
                 // end global beta calculation
         }
-        if (isGoodEmcTrack(electron)) {
+        if (electron->emcPidTraitsIndex() >= 0) {
+//                    if (isGoodEmcTrack(electron)) {
             StPicoEmcPidTraits * Emc =  picoDst->emcPidTraits(electron->emcPidTraitsIndex());
             e = Emc->e();
             e0 = Emc->e0();
