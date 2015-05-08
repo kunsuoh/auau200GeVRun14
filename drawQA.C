@@ -18,7 +18,7 @@ double ptbin2[nbin+1] = {0.2, 0.3, 0.4, 0.5, 0.7, 0.8, 1.0, 1.5, 2.5, 3.5, 5, 7,
 int centbin[10] = {11,23,44,77,125,190,275,381,443,650}; // Guannan Xie's definition at HF PWG meeting Apr. 23
 double zdcxbin[7] = {15000, 20000, 25000, 30000, 35000, 40000, 45000};
 
-int drawQA(int selCent = 1,unsigned short opt = 0x400){
+void drawQA(int selCent = 1,unsigned short opt = 0x2000){
     
     if (opt>>0 & 1) {
         TNtuple * ntuple = (TNtuple*)infile->Get("nt");
@@ -1268,5 +1268,181 @@ int drawQA(int selCent = 1,unsigned short opt = 0x400){
         
     }
 
-    
+    // electron TOF pid : pairMass, nsige, 
+    if (opt>>13 & 1) {
+        cout << "electron TOF PID study" << endl;
+        const int n = 12;
+        
+        TString base = "abs(eta) < 0.7 && nsige > -1";
+        TString basecutUL = base + "&& pairCharge==0";
+        TString basecutLS = base + "&& pairCharge!=0";
+        TString ptcut = "&& pt > 1.5";
+        TString drawingObj[n] = {"nsige","e0/pt/TMath::CosH(eta)","e/pt/TMath::CosH(eta)","zDist","phiDist","etaTowDist","phiTowDist","neta","nphi","pairMass","partner_nsige","dca"};
+        
+        TString infilename = "Ana_2.root";
+        TFile * infile = new TFile(infilename);
+        TTree * tPureE = (TTree*)infile->Get("tPureE");
+
+
+        TCanvas * cc = new TCanvas("cc","cc",500,500);
+        cc->SetLogz();
+        TH2D * hPosition = new TH2D("hPosition","hPosition",500,-10,10,500,-10,10);
+        tPureE->Draw("pairPositionX:pairPositionY>>hPosition",basecutUL + ptcut,"col2");
+        cc->Update();
+        TCanvas * cc2 = new TCanvas("cc2","cc2",500,500);
+        cc2->SetLogz();
+        TH2D * hPosition2 = new TH2D("hPosition2","hPosition2",500,-10,10,500,-10,10);
+        tPureE->Draw("pairPositionX:pairPositionY>>hPosition2",basecutLS + ptcut,"col2");
+        cc2->Update();
+        
+        
+        int nbin[n] = {289, 100, 100, 100, 100, 100, 100, 10, 10, 100, 289, 100};
+        double xmin[n] = {-13, 0, 0, -20, -0.1, -0.1, -0.1, 0, 0, 0, -13, -0.1};
+        double xmax[n] = {13, 3, 3, 20, 0.1, 0.1, 0.1, 10, 10, 0.01, 13, 0.1};
+        
+        TCanvas * c[n];
+        TH1D * h0;
+        TH1D * h1;
+        TH1D * h2;
+        
+        
+        for (int i = 0; i<n; i++) {
+            
+            h0 = new TH1D("h0",drawingObj[i],nbin[i],xmin[i],xmax[i]);
+            h1 = new TH1D("h1",drawingObj[i],nbin[i],xmin[i],xmax[i]);
+            h2 = new TH1D("h2",drawingObj[i],nbin[i],xmin[i],xmax[i]);
+
+            
+            
+            c[i] = new TCanvas(Form("c%d",i),Form("c%d",i),500,400);
+         //   c[i]->SetLogy();
+            
+            tPureE->Draw(drawingObj[i] + ">>h1",basecutUL + ptcut,"");
+            tPureE->Draw(drawingObj[i] + ">>h2",basecutLS + ptcut,"same");
+            h1->Sumw2();
+            h2->Sumw2();
+            h0->Add(h1,h2,1,-1);
+            h0->Draw("same");
+            
+            
+            h1->SetLineColor(1);
+            h2->SetLineColor(4);
+            h0->SetLineColor(2);
+            if (i==0){
+                TF1 * fitfun = new TF1("fitfun","gaus(0)",-2,3);
+                fitfun->SetParameters(  6.04752e+03, -4.30945e-01, 9.59738e-01);
+                h0->Fit(fitfun,"LNOR");
+                
+                fitfun->SetLineColor(2);
+                fitfun->SetLineStyle(2);
+                fitfun->SetRange(-13,13);
+                fitfun->Draw("same");
+                
+                cout << fitfun->GetChisquare() << "/" << fitfun->GetNDF() << endl;
+            }
+            if (i==1){
+                TF1 * fitfun = new TF1("fitfun","gaus(0)",0.5,1.5);
+                fitfun->SetParameters(100, 1., 1.);
+                h0->Fit(fitfun,"LNOR");
+                
+                fitfun->SetLineColor(2);
+                fitfun->SetLineStyle(2);
+                fitfun->SetRange(-13,13);
+                fitfun->Draw("same");
+                
+                cout << fitfun->GetChisquare() << "/" << fitfun->GetNDF() << endl;
+            }        
+            if (i==2){
+                TF1 * fitfun = new TF1("fitfun","gaus(0)",0.5,1.5);
+                fitfun->SetParameters(100, 1., 1.);
+                h0->Fit(fitfun,"LNOR");
+                
+                fitfun->SetLineColor(2);
+                fitfun->SetLineStyle(2);
+                fitfun->SetRange(-13,13);
+                fitfun->Draw("same");
+                
+                cout << fitfun->GetChisquare() << "/" << fitfun->GetNDF() << endl;
+            }            
+            if (i==10){
+                TF1 * fitfun = new TF1("fitfun","gaus(0)",-3,3);
+                fitfun->SetParameters(100, 0., 1.);
+                h0->Fit(fitfun,"LNOR");
+                
+                fitfun->SetLineColor(2);
+                fitfun->SetLineStyle(2);
+                fitfun->SetRange(-13,13);
+                fitfun->Draw("same");
+                
+                cout << fitfun->GetChisquare() << "/" << fitfun->GetNDF() << endl;
+            }
+            c[i]->SaveAs(Form("~/Desktop/c%d.pdf",i));
+            cout << h0->Integral() << " " << h0->Integral(1,nbin[i]) << " " << h0->GetEntries() << endl;
+        }
+        
+
+    }
+        // hadron pid 
+    if (opt>>14 & 1) {
+        cout << "hadron PID study" << endl;
+        const int n = 9;
+        
+        TString base = "abs(1-beta) < 0.025 && nsige > 0 && abs(eta) < 0.7";
+        TString basecutUL = base + "&& pairCharge==0";
+        TString basecutLS = base + "&& pairCharge!=0";
+        TString ptcut = "&& pt > 1. && pt < 2.";
+        TString drawingObj[n] = {"nsige","e0/pt/TMath::CosH(eta)","e/pt/TMath::CosH(eta)","zDist","phiDist","etaTowDist","phiTowDist","neta","nphi"};
+        
+        TString infilename = "Ana_2.root";
+        TFile * infile = new TFile(infilename);
+        TTree * tPureE = (TTree*)infile->Get("tPureE");
+
+        int nbin[n] = {289, 100, 100, 100, 100, 100, 100, 10, 10};
+        double xmin[n] = {-13, 0, 0, -20, -0.1, -0.1, -0.1, 0, 0};
+        double xmax[n] = {13, 3, 3, 20, 0.1, 0.1, 0.1, 10, 10};
+        
+        TCanvas * c[n];
+        TH1D * h0;
+        TH1D * h1;
+        TH1D * h2;
+        
+        for (int i = 0; i<n; i++) {
+            
+            h0 = new TH1D("h0","h0",nbin[i],xmin[i],xmax[i]);
+            h1 = new TH1D("h1","h1",nbin[i],xmin[i],xmax[i]);
+            h2 = new TH1D("h2","h2",nbin[i],xmin[i],xmax[i]);
+
+            
+            
+            c[i] = new TCanvas(Form("c%d",i),Form("c%d",i),500,400);
+         //   c[i]->SetLogy();
+            
+            tPureE->Draw(drawingObj[i] + ">>h1",basecutUL + ptcut,"");
+            tPureE->Draw(drawingObj[i] + ">>h2",basecutLS + ptcut,"same");
+            h1->Sumw2();
+            h2->Sumw2();
+            h0->Add(h1,h2,1,-1);
+            h0->Draw("same");
+            
+            
+            h1->SetLineColor(1);
+            h2->SetLineColor(4);
+            h0->SetLineColor(2);
+            if (i==0){
+                TF1 * fitfun = new TF1("fitfun","gaus(0)",-3,3);
+                fitfun->SetParameters(  6.04752e+03, -4.30945e-01, 9.59738e-01);
+                h0->Fit(fitfun,"LNOR");
+                
+                fitfun->SetLineColor(2);
+                fitfun->SetLineStyle(2);
+                fitfun->SetRange(-13,13);
+                fitfun->Draw("same");
+                
+                cout << fitfun->GetChisquare() << "/" << fitfun->GetNDF() << endl;
+            }
+        }
+        
+
+    }
+
 }
