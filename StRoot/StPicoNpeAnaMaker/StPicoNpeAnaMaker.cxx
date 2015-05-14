@@ -206,9 +206,9 @@ Int_t StPicoNpeAnaMaker::Finish()
     hHFTOuter->Write();
     hTrigger->Write();
     
- //   tInc->Write();
- //   tIncPion->Write();
- //   tPhE->Write();
+    tInc->Write();
+    tIncPion->Write();
+    tPhE->Write();
     tPureE->Write();
     
     mOutputFile->Close();
