@@ -248,6 +248,7 @@ Int_t StPicoNpeAnaMaker::Make()
     hEvent->Fill(3);
     
     if (!isGoodEvent()) return kStOK;
+    hEvent->Fill(4);
     
     mRefMult = std::numeric_limits<Int_t>::quiet_NaN();
     mZDCx = std::numeric_limits<Int_t>::quiet_NaN();
@@ -266,7 +267,6 @@ Int_t StPicoNpeAnaMaker::Make()
     
     // -------------- USER ANALYSIS -------------------------
     StThreeVectorF const pVtx = picoDst->event()->primaryVertex();
-  /*  
     // Inclusive hadrons with StPicoTrack
     UInt_t nTracks = picoDst->numberOfTracks();
     for (unsigned short iTrack = 0; iTrack < nTracks; ++iTrack) {
@@ -298,11 +298,11 @@ Int_t StPicoNpeAnaMaker::Make()
                 
                 // start global beta calculation
                 double newBeta = Tof->btofBeta();
-                if(newBeta<1e-4 && fabs(dca)<3.) { 
+                if(newBeta<1e-4 && fabs(dca)<3.) {
                     StThreeVectorF btofHitPos = Tof->btofHitPos();
                     float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
                     float tof = Tof->btof();
-                	if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
+                    if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
                 }
                 beta = 1./newBeta;
                 // end global beta calculation
@@ -360,16 +360,16 @@ Int_t StPicoNpeAnaMaker::Make()
         
         if (isGoodTofTrack(etrack))  {
             StPicoBTofPidTraits * Tof = picoDst->btofPidTraits(etrack->bTofPidTraitsIndex());
-                // start global beta calculation
-                double newBeta = Tof->btofBeta();
-                if(newBeta<1e-4 && fabs(dca)<3.) { 
-                    StThreeVectorF btofHitPos = Tof->btofHitPos();
-                    float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
-                    float tof = Tof->btof();
-                	if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
-                }
-                beta = 1./newBeta;
-                // end global beta calculation
+            // start global beta calculation
+            double newBeta = Tof->btofBeta();
+            if(newBeta<1e-4 && fabs(dca)<3.) {
+                StThreeVectorF btofHitPos = Tof->btofHitPos();
+                float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
+                float tof = Tof->btof();
+                if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
+            }
+            beta = 1./newBeta;
+            // end global beta calculation
         }
         if (isGoodEmcTrack(etrack)) {
             StPicoEmcPidTraits * Emc =  picoDst->emcPidTraits(etrack->emcPidTraitsIndex());
@@ -387,7 +387,6 @@ Int_t StPicoNpeAnaMaker::Make()
         }
         tInc->Fill();
     }
-  */  
     float const bField = picoDst->event()->bField();
     
     // Photonic Electron
@@ -403,7 +402,7 @@ Int_t StPicoNpeAnaMaker::Make()
         
         StPicoTrack const* electron = picoDst->track(epair->electronIdx());
         StPicoTrack const* partner = picoDst->track(epair->partnerIdx());
-
+        
         // calculate Lorentz vector of electron-partner pair
         StPhysicalHelixD electronHelix = electron->dcaGeometry().helix();
         StPhysicalHelixD partnerHelix = partner->dcaGeometry().helix();
@@ -445,19 +444,19 @@ Int_t StPicoNpeAnaMaker::Make()
         
         if (isGoodTofTrack(electron))  {
             StPicoBTofPidTraits * Tof = picoDst->btofPidTraits(electron->bTofPidTraitsIndex());
-                // start global beta calculation
-                double newBeta = Tof->btofBeta();
-                if(newBeta<1e-4 && fabs(dca)<3.) { 
-                    StThreeVectorF btofHitPos = Tof->btofHitPos();
-                    float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
-                    float tof = Tof->btof();
-                	if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
-                }
-                beta = 1./newBeta;
-                // end global beta calculation
+            // start global beta calculation
+            double newBeta = Tof->btofBeta();
+            if(newBeta<1e-4 && fabs(dca)<3.) {
+                StThreeVectorF btofHitPos = Tof->btofHitPos();
+                float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
+                float tof = Tof->btof();
+                if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
+            }
+            beta = 1./newBeta;
+            // end global beta calculation
         }
-        if (electron->emcPidTraitsIndex() >= 0) {
-//                    if (isGoodEmcTrack(electron)) {
+        //if (electron->emcPidTraitsIndex() >= 0) {
+        if (isGoodEmcTrack(electron)) {
             StPicoEmcPidTraits * Emc =  picoDst->emcPidTraits(electron->emcPidTraitsIndex());
             e = Emc->e();
             e0 = Emc->e0();
@@ -472,8 +471,8 @@ Int_t StPicoNpeAnaMaker::Make()
             phiTowDist = Emc->phiTowDist();
         }
         if(isGoodPureElectron(epair)) tPureE->Fill();
- //       if(!isGoodTofTrack(electron) && !isGoodEmcTrack(electron)) continue;
- //       tPhE->Fill();
+        if(!isGoodTofTrack(electron) && !isGoodEmcTrack(electron)) continue;
+        tPhE->Fill();
     }
     return kStOK;
 }
@@ -481,13 +480,13 @@ Int_t StPicoNpeAnaMaker::Make()
 bool StPicoNpeAnaMaker::isGoodEvent() const
 {
     return mPicoDstMaker->picoDst()->event()->triggerWord()>>cutsAna::trigger & cutsAna::triggerLength;
-
+    
 }
 //-----------------------------------------------------------------------------
 bool StPicoNpeAnaMaker::isGoodPureElectron(StElectronPair const* const epair) const
 {
     if(!epair) return false;
-        
+    
     StPicoTrack const* electron = mPicoDstMaker->picoDst()->track(epair->electronIdx());
     StPicoTrack const* partner = mPicoDstMaker->picoDst()->track(epair->partnerIdx());
     
