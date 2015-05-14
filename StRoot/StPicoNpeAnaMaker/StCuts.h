@@ -19,6 +19,7 @@ namespace cutsAna
     extern float const vz;
     extern float const vzVpdVz;
     extern unsigned char const trigger;
+    extern unsigned char const triggerLength;
     
     // hadron selectron
     extern float const nSigPion;

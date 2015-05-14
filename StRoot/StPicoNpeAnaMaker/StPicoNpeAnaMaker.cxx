@@ -481,7 +481,7 @@ Int_t StPicoNpeAnaMaker::Make()
 //-----------------------------------------------------------------------------
 bool StPicoNpeAnaMaker::isGoodEvent() const
 {
-    return mPicoDstMaker->picoDst()->event()->triggerWord()>>cuts::trigger & 0x3;
+    return mPicoDstMaker->picoDst()->event()->triggerWord()>>cutsAna::trigger & cutsAna::triggerLength;
 
 }
 //-----------------------------------------------------------------------------
