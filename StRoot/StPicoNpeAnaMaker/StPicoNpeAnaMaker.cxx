@@ -471,7 +471,7 @@ Int_t StPicoNpeAnaMaker::Make()
             phiTowDist = Emc->phiTowDist();
         }
         if(isGoodPureElectron(epair)) tPureE->Fill();
-        if(!isGoodTofTrack(electron) && !isGoodEmcTrack(electron)) continue;
+        //if(!isGoodTofTrack(electron) && !isGoodEmcTrack(electron)) continue;
         tPhE->Fill();
     }
     return kStOK;
