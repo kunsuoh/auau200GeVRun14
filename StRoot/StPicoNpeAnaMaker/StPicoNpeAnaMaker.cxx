@@ -184,9 +184,6 @@ Int_t StPicoNpeAnaMaker::Init()
     tPureE->Branch("pairPositionX",&pairPositionX,"pairPositionX/F");
     tPureE->Branch("pairPositionY",&pairPositionY,"pairPositionY/F");
     
-    //test
-    
-    
     return kStOK;
 }
 //-----------------------------------------------------------------------------
