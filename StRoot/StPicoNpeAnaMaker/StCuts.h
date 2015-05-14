@@ -18,6 +18,7 @@ namespace cutsAna
     // event
     extern float const vz;
     extern float const vzVpdVz;
+    extern unsigned char const trigger;
     
     // hadron selectron
     extern float const nSigPion;

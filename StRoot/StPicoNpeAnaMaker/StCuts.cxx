@@ -16,6 +16,7 @@ namespace cutsAna
     // event
     float const vz = 6.0;// cm.
     float const vzVpdVz = 3.0; // 3 cm.
+    unsigned char const trigger = 19; // 19: BHT1, 21: BHT2, 23: BHT3
 
     // hadron selectron
     float const nSigPion = 2;
@@ -24,7 +25,7 @@ namespace cutsAna
     int const pionNhitsDedx = 15;
     float const pionHitRatio = 0.52;
     float const pionEta = 0.7;
-    float const pionPt = 0.2;
+    float const pionPt = 1.5;
 
     // electron
     bool const electronRequireHFT = true;
@@ -32,7 +33,7 @@ namespace cutsAna
     int const electronNhitsDedx = 15;
     float const electronHitRatio = 0.52;
     float const electronEta = 0.7;
-    float const electronPt = 0.2;
+    float const electronPt = 1.5;
 
     
     // partner

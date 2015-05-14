@@ -55,6 +55,7 @@ class StPicoNpeAnaMaker : public StMaker
     bool isGoodEmcTrack(StPicoTrack const*) const;
     bool isGoodPair(StElectronPair const*) const;
     bool isGoodPureElectron(StElectronPair const*) const;
+    bool isGoodEvent() const;
     
     
     StPicoDstMaker* mPicoDstMaker;

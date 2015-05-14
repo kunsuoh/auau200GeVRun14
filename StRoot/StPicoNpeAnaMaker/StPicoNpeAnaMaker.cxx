@@ -248,6 +248,8 @@ Int_t StPicoNpeAnaMaker::Make()
     }
     hEvent->Fill(3);
     
+    if (!isGoodEvent()) return kStOK;
+    
     mRefMult = std::numeric_limits<Int_t>::quiet_NaN();
     mZDCx = std::numeric_limits<Int_t>::quiet_NaN();
     
@@ -475,6 +477,12 @@ Int_t StPicoNpeAnaMaker::Make()
  //       tPhE->Fill();
     }
     return kStOK;
+}
+//-----------------------------------------------------------------------------
+bool StPicoNpeAnaMaker::isGoodEvent() const
+{
+    return mPicoDstMaker->picoDst()->event()->triggerWord()>>cuts::trigger & 0x3;
+
 }
 //-----------------------------------------------------------------------------
 bool StPicoNpeAnaMaker::isGoodPureElectron(StElectronPair const* const epair) const
