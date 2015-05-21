@@ -56,7 +56,7 @@ class StPicoNpeAnaMaker : public StMaker
     bool isGoodPair(StElectronPair const*) const;
     bool isGoodPureElectron(StElectronPair const*) const;
     bool isGoodEvent() const;
-    void setTree(TTree *, TString, TString, TString);
+    void setTree(TTree const*, TString, TString, TString) const;
 
     
     StPicoDstMaker* mPicoDstMaker;

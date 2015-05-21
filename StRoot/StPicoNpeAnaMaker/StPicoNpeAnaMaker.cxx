@@ -474,7 +474,7 @@ bool StPicoNpeAnaMaker::isGoodEmcTrack(StPicoTrack const * const trk) const
     ;
 }
 //-----------------------------------------------------------------------------
-void StPicoNpeAnaMaker::setTree(TTree * tree, TString opt, TString name, TString comment)
+void StPicoNpeAnaMaker::setTree(TTree const * const tree, TString opt, TString name, TString comment) const
 {
     tree = new TTree(name,comment);
 
