@@ -1,78 +1,71 @@
 #ifndef CUTS_H
 #define CUTS_H
-
 /* **************************************************
  *  Cuts namespace.
  *
- *  Authors:  Xin Dong        (xdong@lbl.gov)
- *            Michael Lomnitz (mrlomnitz@lbl.gov)
- *            Mustafa Mustafa (mmustafa@lbl.gov)
- *            Jochen Thaeder  (jmthader@lbl.gov)   
+ *  Authors:  **Kunsu OH        (kunsuoh@gmail.com)
+ *
+ *  **Code Maintainer
  *
  * **************************************************
  */
 
+#include "Rtypes.h"
+#include <string>
 
 namespace cutsAna
 {
     // event
-    extern float const vz;
-    extern float const vzVpdVz;
-    extern unsigned char const trigger;
-    extern unsigned char const triggerLength;
+    float const vz = 6.0;// cm.
+    float const vzVpdVz = 3.0; // 3 cm.
+    unsigned char const trigger = 0; // 19: BHT1, 21: BHT2, 23: BHT3
+    unsigned char const triggerLength = 0x1F;
     
     // hadron selectron
-    extern float const nSigPion;
-    extern bool const pionRequireHFT;
-    extern int const pionNHitsFit;
-    extern int const pionNhitsDedx;
-    extern float const pionHitRatio;
-    extern float const pionEta;
-    extern float const pionPt;
-
+    float const nSigPion = 2;
+    bool const pionRequireHFT = true;
+    int const pionNHitsFit = 20;
+    int const pionNhitsDedx = 15;
+    float const pionHitRatio = 0.52;
+    float const pionEta = 0.7;
+    float const pionPt = 1.5;
+    
     // electron
-    extern bool const electronRequireHFT;
-    extern int const electronNHitsFit;
-    extern int const electronNhitsDedx;
-    extern float const electronHitRatio;
-    extern float const electronEta;
-    extern float const electronPt;
+    bool const electronRequireHFT = true;
+    int const electronNHitsFit = 20;
+    int const electronNhitsDedx = 15;
+    float const electronHitRatio = 0.52;
+    float const electronEta = 0.7;
+    float const electronPt = 1.5;
     
     
     // partner
-    extern int const partnerNHitsFit;
-    extern float const partnerEta;
-    extern float const partnerPt;
-    // partner pid
-    extern float const partnerNSigElectron;
+    int const partnerNHitsFit = 15;
+    float const partnerEta = 1.;
+    float const partnerPt = 0.2;
     
     
     // electron + partner pair cuts
-    extern float const pairMass;
-    extern float const pairDca;
+    float const pairMass = 0.4;
+    float const pairDca = 3.;
     
     
-    // pure electron
-    extern int const pureElectronNHitsFit;
-    extern int const pureElectronNhitsDedx;
-    extern float const pureElectronHitRatio;
-    extern float const pureElectronEta;
-    extern float const pureElectronPt;
+    
     // pure electron pair cut
-    extern float const pureElectronMass;
-    extern float const pureElectronDca;
+    float const pureElectronMass = 0.01;
+    float const pureElectronDca = 0.01;
     
-
-    //  pid
-    extern float const nSigElectron;
-    extern int const emcNEta;
-    extern int const emcNPhi;
-    extern float const emcEoverPLow;
-    extern float const emcEoverPHigh;
-    extern float const emcPhiDist;
-    extern float const emcZDist;
-    extern float const emcAssDist;
-    extern float const tofBeta;
-
+    
+    // pid
+    float const nSigElectron = 3;
+    float const partnerNSigElectron = 13;
+    int const emcNEta = 0;//1;
+    int const emcNPhi = 0;//1;
+    float const emcEoverPLow = 0;//0.5;
+    float const emcEoverPHigh = 10;//1.7;
+    float const emcPhiDist = 10;//0.013;
+    float const emcZDist = 100;//2;
+    float const emcAssDist = 10;//0.05;
+    float const tofBeta = 1;//0.1;
 }
 #endif
