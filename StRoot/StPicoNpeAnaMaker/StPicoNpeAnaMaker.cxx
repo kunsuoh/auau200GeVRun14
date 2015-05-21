@@ -6,8 +6,6 @@
 #include "TFile.h"
 #include "TClonesArray.h"
 #include "TTree.h"
-#include "TNtuple.h"
-#include "THnSparse.h"
 
 #include "StPicoDstMaker/StPicoDstMaker.h"
 #include "StPicoDstMaker/StPicoDst.h"
@@ -72,7 +70,6 @@ Int_t StPicoNpeAnaMaker::Init()
     int bins[4] =   {20, 1000,   289, 800};
     double mins[4] = {-1, 0,      -13, -0.2};
     double maxs[4] = {1, 10,     13,  0.6};
-    hsTrackPid = new THnSparseF("hsTrackPid", "hsTrackPid", 4, bins, mins, maxs);
     
     tIncPion = new TTree("tIncPion","tree for Pion form PicoDst");
     tInc = new TTree("tInc","tree for electron");

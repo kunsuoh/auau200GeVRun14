@@ -18,12 +18,10 @@
 
 #include "TChain.h"
 #include "StMaker.h"
-#include "THnSparse.h"
 #include "TH2F.h"
 
 class TString;
 class TFile;
-class TNtuple;
 class StPicoNpeEvent;
 class StElectronTrack;
 class StElectronPair;
@@ -72,10 +70,6 @@ class StPicoNpeAnaMaker : public StMaker
     // -------------- USER variables -------------------------
     // add your member variables here. 
     // Remember that ntuples size can be really big, use histograms where appropriate
-    TNtuple* mNtuple_Electron;
-    TNtuple* mNtuple_ElectronPico;
-    TNtuple* mNtuple_PhotonicElectron;
-    TNtuple* mNtuple_PureElectron;
     TH1F * hEvent;
     TH1F * hRefMult;
     TH1F * hZDCx;
@@ -85,7 +79,6 @@ class StPicoNpeAnaMaker : public StMaker
     TH1F * hHFTInner;
     TH1F * hHFTOuter;
     
-    THnSparseF * hsTrackPid;
     TTree * tIncPion;
     TTree * tInc;
     TTree * tPhE;
