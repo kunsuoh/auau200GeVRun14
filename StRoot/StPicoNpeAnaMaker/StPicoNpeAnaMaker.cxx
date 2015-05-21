@@ -74,115 +74,10 @@ Int_t StPicoNpeAnaMaker::Init()
     double maxs[4] = {1, 10,     13,  0.6};
     hsTrackPid = new THnSparseF("hsTrackPid", "hsTrackPid", 4, bins, mins, maxs);
     
-    tIncPion = new TTree("tIncPion","tree for Pion form PicoDst");
-    tIncPion->Branch("dca",&dca,"dca/F");
-    tIncPion->Branch("pt",&pt,"pt/F");
-    tIncPion->Branch("eta",&eta,"eta/F");
-    
-    tIncPion->Branch("nsige",&nsige,"nsige/F");
-    tIncPion->Branch("beta",&beta,"beta/F");
-    tIncPion->Branch("e",&e,"e/F");
-    tIncPion->Branch("e0",&e0,"e0/F");
-    tIncPion->Branch("e1",&e1,"e1/F");
-    tIncPion->Branch("e2",&e2,"e2/F");
-    tIncPion->Branch("e3",&e3,"e3/F");
-    tIncPion->Branch("neta",&neta,"neta/b");
-    tIncPion->Branch("nphi",&nphi,"nphi/b");
-    tIncPion->Branch("phiDist",&phiDist,"phiDist/F");
-    tIncPion->Branch("zDist",&zDist,"zDist/F");
-    tIncPion->Branch("etaTowDist",&etaTowDist,"etaTowDist/F");
-    tIncPion->Branch("phiTowDist",&phiTowDist,"phiTowDist/F");
-    
-    tIncPion->Branch("mZDCx",&mZDCx,"mZDCx/s");
-    tIncPion->Branch("mRefMult",&mRefMult,"mRefMult/s");
-    
-    
-    tInc = new TTree("tInc","tree for Inclusive Elctron");
-    tInc->Branch("dca",&dca,"dca/F");
-    tInc->Branch("pt",&pt,"pt/F");
-    tInc->Branch("eta",&eta,"eta/F");
-    
-    tInc->Branch("nsige",&nsige,"nsige/F");
-    tInc->Branch("beta",&beta,"beta/F");
-    tInc->Branch("e",&e,"e/F");
-    tInc->Branch("e0",&e0,"e0/F");
-    tInc->Branch("e1",&e1,"e1/F");
-    tInc->Branch("e2",&e2,"e2/F");
-    tInc->Branch("e3",&e3,"e3/F");
-    tInc->Branch("neta",&neta,"neta/b");
-    tInc->Branch("nphi",&nphi,"nphi/b");
-    tInc->Branch("phiDist",&phiDist,"phiDist/F");
-    tInc->Branch("zDist",&zDist,"zDist/F");
-    tInc->Branch("etaTowDist",&etaTowDist,"etaTowDist/F");
-    tInc->Branch("phiTowDist",&phiTowDist,"phiTowDist/F");
-    
-    tInc->Branch("mZDCx",&mZDCx,"mZDCx/s");
-    tInc->Branch("mRefMult",&mRefMult,"mRefMult/s");
-    
-    
-    tPhE = new TTree("tPhE","tree for Photonic Elctron");
-    tPhE->Branch("dca",&dca,"dca/F");
-    tPhE->Branch("pt",&pt,"pt/F");
-    tPhE->Branch("parnter_pt",&partner_pt,"partner_pt/F");
-    tPhE->Branch("eta",&eta,"eta/F");
-    
-    tPhE->Branch("nsige",&nsige,"nsige/F");
-    tPhE->Branch("partner_nsige",&partner_nsige,"partner_nsige/F");
-    tPhE->Branch("beta",&beta,"beta/F");
-    tPhE->Branch("e",&e,"e/F");
-    tPhE->Branch("e0",&e0,"e0/F");
-    tPhE->Branch("e1",&e1,"e1/F");
-    tPhE->Branch("e2",&e2,"e2/F");
-    tPhE->Branch("e3",&e3,"e3/F");
-    tPhE->Branch("neta",&neta,"neta/b");
-    tPhE->Branch("nphi",&nphi,"nphi/b");
-    tPhE->Branch("phiDist",&phiDist,"phiDist/F");
-    tPhE->Branch("zDist",&zDist,"zDist/F");
-    tPhE->Branch("etaTowDist",&etaTowDist,"etaTowDist/F");
-    tPhE->Branch("phiTowDist",&phiTowDist,"phiTowDist/F");
-    
-    tPhE->Branch("pairAngle3d",&pairAngle3d,"pairAngle3d/F");
-    tPhE->Branch("pairAnglePhi",&pairAnglePhi,"pairAnglePhi/F");
-    tPhE->Branch("pairAngleTheta",&pairAngleTheta,"pairAngleTheta/F");
-    tPhE->Branch("pairMass",&pairMass,"pairMass/F");
-    tPhE->Branch("pairCharge",&pairCharge,"pairCharge/B");
-    tPhE->Branch("pairDca",&pairDca,"pairDca/F");
-    tPhE->Branch("pairPositionX",&pairPositionX,"pairPositionX/F");
-    tPhE->Branch("pairPositionY",&pairPositionY,"pairPositionY/F");
-    
-    tPhE->Branch("mZDCx",&mZDCx,"mZDCx/s");
-    tPhE->Branch("mRefMult",&mRefMult,"mRefMult/s");
-    
-    
-    tPureE = new TTree("tPureE","tree for Pure Elctron");
-    tPureE->Branch("dca",&dca,"dca/F");
-    tPureE->Branch("pt",&pt,"pt/F");
-    tPureE->Branch("parnter_pt",&partner_pt,"partner_pt/F");
-    tPureE->Branch("eta",&eta,"eta/F");
-    
-    tPureE->Branch("nsige",&nsige,"nsige/F");
-    tPureE->Branch("partner_nsige",&partner_nsige,"partner_nsige/F");
-    tPureE->Branch("beta",&beta,"beta/F");
-    tPureE->Branch("e",&e,"e/F");
-    tPureE->Branch("e0",&e0,"e0/F");
-    tPureE->Branch("e1",&e1,"e1/F");
-    tPureE->Branch("e2",&e2,"e2/F");
-    tPureE->Branch("e3",&e3,"e3/F");
-    tPureE->Branch("neta",&neta,"neta/b");
-    tPureE->Branch("nphi",&nphi,"nphi/b");
-    tPureE->Branch("phiDist",&phiDist,"phiDist/F");
-    tPureE->Branch("zDist",&zDist,"zDist/F");
-    tPureE->Branch("etaTowDist",&etaTowDist,"etaTowDist/F");
-    tPureE->Branch("phiTowDist",&phiTowDist,"phiTowDist/F");
-    
-    tPureE->Branch("pairAngle3d",&pairAngle3d,"pairAngle3d/F");
-    tPureE->Branch("pairAnglePhi",&pairAnglePhi,"pairAnglePhi/F");
-    tPureE->Branch("pairAngleTheta",&pairAngleTheta,"pairAngleTheta/F");
-    tPureE->Branch("pairMass",&pairMass,"pairMass/F");
-    tPureE->Branch("pairCharge",&pairCharge,"pairCharge/B");
-    tPureE->Branch("pairDca",&pairDca,"pairDca/F");
-    tPureE->Branch("pairPositionX",&pairPositionX,"pairPositionX/F");
-    tPureE->Branch("pairPositionY",&pairPositionY,"pairPositionY/F");
+    setTree(tIncPion,"T","tIncPion","tree for Pion form PicoDst");
+    setTree(tInc,"T","tInc","tree for Inclusive Elctron");
+    setTree(tPhE,"P","tPhE","tree for Photonic Elctron");
+    setTree(tPureE,"P","tPureE","tree for Pure Elctron");
     
     return kStOK;
 }
@@ -577,4 +472,67 @@ bool StPicoNpeAnaMaker::isGoodEmcTrack(StPicoTrack const * const trk) const
      */
     true
     ;
+}
+//-----------------------------------------------------------------------------
+void StPicoNpeAnaMaker::setTree(TTree * tree, TString opt, TString name, TString comment)
+{
+    tree = new TTree(name,comment);
+
+    if (opt=="T") {
+        tree->Branch("dca",&dca,"dca/F");
+        tree->Branch("pt",&pt,"pt/F");
+        tree->Branch("eta",&eta,"eta/F");
+        
+        tree->Branch("nsige",&nsige,"nsige/F");
+        tree->Branch("beta",&beta,"beta/F");
+        tree->Branch("e",&e,"e/F");
+        tree->Branch("e0",&e0,"e0/F");
+        tree->Branch("e1",&e1,"e1/F");
+        tree->Branch("e2",&e2,"e2/F");
+        tree->Branch("e3",&e3,"e3/F");
+        tree->Branch("neta",&neta,"neta/b");
+        tree->Branch("nphi",&nphi,"nphi/b");
+        tree->Branch("phiDist",&phiDist,"phiDist/F");
+        tree->Branch("zDist",&zDist,"zDist/F");
+        tree->Branch("etaTowDist",&etaTowDist,"etaTowDist/F");
+        tree->Branch("phiTowDist",&phiTowDist,"phiTowDist/F");
+        
+        tree->Branch("mZDCx",&mZDCx,"mZDCx/s");
+        tree->Branch("mRefMult",&mRefMult,"mRefMult/s");
+    }
+    else if (opt=="P"){
+        tree->Branch("dca",&dca,"dca/F");
+        tree->Branch("pt",&pt,"pt/F");
+        tree->Branch("eta",&eta,"eta/F");
+        
+        tree->Branch("nsige",&nsige,"nsige/F");
+        tree->Branch("beta",&beta,"beta/F");
+        tree->Branch("e",&e,"e/F");
+        tree->Branch("e0",&e0,"e0/F");
+        tree->Branch("e1",&e1,"e1/F");
+        tree->Branch("e2",&e2,"e2/F");
+        tree->Branch("e3",&e3,"e3/F");
+        tree->Branch("neta",&neta,"neta/b");
+        tree->Branch("nphi",&nphi,"nphi/b");
+        tree->Branch("phiDist",&phiDist,"phiDist/F");
+        tree->Branch("zDist",&zDist,"zDist/F");
+        tree->Branch("etaTowDist",&etaTowDist,"etaTowDist/F");
+        tree->Branch("phiTowDist",&phiTowDist,"phiTowDist/F");
+        
+        tree->Branch("mZDCx",&mZDCx,"mZDCx/s");
+        tree->Branch("mRefMult",&mRefMult,"mRefMult/s");
+
+        tree->Branch("parnter_pt",&partner_pt,"partner_pt/F");
+        tree->Branch("partner_nsige",&partner_nsige,"partner_nsige/F");
+        
+        tree->Branch("pairAngle3d",&pairAngle3d,"pairAngle3d/F");
+        tree->Branch("pairAnglePhi",&pairAnglePhi,"pairAnglePhi/F");
+        tree->Branch("pairAngleTheta",&pairAngleTheta,"pairAngleTheta/F");
+        tree->Branch("pairMass",&pairMass,"pairMass/F");
+        tree->Branch("pairCharge",&pairCharge,"pairCharge/B");
+        tree->Branch("pairDca",&pairDca,"pairDca/F");
+        tree->Branch("pairPositionX",&pairPositionX,"pairPositionX/F");
+        tree->Branch("pairPositionY",&pairPositionY,"pairPositionY/F");
+    }
+    else LOG_WARN << "Select tree options. (T is for track, P is for pair.)" << endm;
 }
