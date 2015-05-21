@@ -67,10 +67,6 @@ Int_t StPicoNpeAnaMaker::Init()
     hHFTOuter = new TH1F("hHFTOuter","hHFTOuter",1000,0,30000);
     hTrigger = new TH1I("hTrigger","hTrigger",30,0,30);
     
-    int bins[4] =   {20, 1000,   289, 800};
-    double mins[4] = {-1, 0,      -13, -0.2};
-    double maxs[4] = {1, 10,     13,  0.6};
-    
     tIncPion = new TTree("tIncPion","tree for Pion form PicoDst");
     tInc = new TTree("tInc","tree for electron");
     tPhE = new TTree("tPhE","tree for photonic electron");
@@ -280,7 +276,7 @@ bool StPicoNpeAnaMaker::isGoodPartner(StPicoTrack const * const trk) const
 bool StPicoNpeAnaMaker::isGoodTofTrack(StPicoTrack const * const trk) const
 {
     if (trk->bTofPidTraitsIndex() < 0) return false;
-    StPicoBTofPidTraits * Tof = mPicoDstMaker->picoDst()->btofPidTraits(trk->bTofPidTraitsIndex());
+    // StPicoBTofPidTraits * Tof = mPicoDstMaker->picoDst()->btofPidTraits(trk->bTofPidTraitsIndex());
     
     return
     // TMath::Abs(1-1/Tof->btofBeta()) < cutsAna::tofBeta
@@ -292,7 +288,7 @@ bool StPicoNpeAnaMaker::isGoodTofTrack(StPicoTrack const * const trk) const
 bool StPicoNpeAnaMaker::isGoodEmcTrack(StPicoTrack const * const trk) const
 {
     if (trk->emcPidTraitsIndex() < 0) return false;
-    StPicoEmcPidTraits * Emc =  mPicoDstMaker->picoDst()->emcPidTraits(trk->emcPidTraitsIndex());
+    // StPicoEmcPidTraits * Emc =  mPicoDstMaker->picoDst()->emcPidTraits(trk->emcPidTraitsIndex());
     
     return
     /*   Emc->nPhi() > cutsAna::emcNPhi &&
