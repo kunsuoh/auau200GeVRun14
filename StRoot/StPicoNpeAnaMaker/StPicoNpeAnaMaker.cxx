@@ -75,9 +75,9 @@ Int_t StPicoNpeAnaMaker::Init()
     hsTrackPid = new THnSparseF("hsTrackPid", "hsTrackPid", 4, bins, mins, maxs);
     
     tIncPion = new TTree("tIncPion","tree for Pion form PicoDst");
-    tInc = new TTree("tIncPion","tree for Pion form PicoDst");
-    tPhE = new TTree("tIncPion","tree for Pion form PicoDst");
-    tPureE = new TTree("tIncPion","tree for Pion form PicoDst");
+    tInc = new TTree("tInc","tree for electron");
+    tPhE = new TTree("tPhE","tree for photonic electron");
+    tPureE = new TTree("tPureE","tree for pure electron");
 
     setTree(tIncPion,"T");
     setTree(tInc,"T");
