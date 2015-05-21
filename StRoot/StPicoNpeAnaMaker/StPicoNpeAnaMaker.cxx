@@ -124,7 +124,7 @@ Int_t StPicoNpeAnaMaker::Make()
     }
     hEvent->Fill(1);
     
-    StPicoDst const* picoDst = mPicoDstMaker->picoDst();
+    picoDst = mPicoDstMaker->picoDst();
     
     if (!picoDst)
     {
@@ -170,56 +170,7 @@ Int_t StPicoNpeAnaMaker::Make()
         StPicoTrack* track = picoDst->track(iTrack);
         if (!track) continue;
         if (isGoodPion(track)) {
-            StPhysicalHelixD eHelix = track->dcaGeometry().helix();
-            
-            dca = eHelix.curvatureSignedDistance(pVtx.x(),pVtx.y());
-            pt = track->gPt();
-            eta = track->gMom().pseudoRapidity();
-            
-            nsige = track->nSigmaElectron();
-            
-            beta = std::numeric_limits<float>::quiet_NaN();
-            e = std::numeric_limits<float>::quiet_NaN();
-            e0 = std::numeric_limits<float>::quiet_NaN();
-            e1 = std::numeric_limits<float>::quiet_NaN();
-            e2 = std::numeric_limits<float>::quiet_NaN();
-            e3 = std::numeric_limits<float>::quiet_NaN();
-            nphi = std::numeric_limits<unsigned short>::quiet_NaN();
-            neta = std::numeric_limits<unsigned short>::quiet_NaN();
-            phiDist = std::numeric_limits<float>::quiet_NaN();
-            zDist = std::numeric_limits<float>::quiet_NaN();
-            etaTowDist = std::numeric_limits<float>::quiet_NaN();
-            phiTowDist = std::numeric_limits<float>::quiet_NaN();
-            if (isGoodTofTrack(track))  {
-                StPicoBTofPidTraits * Tof = picoDst->btofPidTraits(track->bTofPidTraitsIndex());
-                
-                // start global beta calculation
-                double newBeta = Tof->btofBeta();
-                if(newBeta<1e-4 && fabs(dca)<3.) {
-                    StThreeVectorF btofHitPos = Tof->btofHitPos();
-                    float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
-                    float tof = Tof->btof();
-                    if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
-                }
-                beta = 1./newBeta;
-                // end global beta calculation
-            }
-            if (isGoodEmcTrack(track)) {
-                StPicoEmcPidTraits * Emc =  picoDst->emcPidTraits(track->emcPidTraitsIndex());
-                e = Emc->e();
-                e0 = Emc->e0();
-                e1 = Emc->e1();
-                e2 = Emc->e2();
-                e3 = Emc->e3();
-                nphi = Emc->nPhi();
-                neta = Emc->nEta();
-                phiDist = Emc->phiDist();
-                zDist = Emc->zDist();
-                etaTowDist = Emc->etaTowDist();
-                phiTowDist = Emc->phiTowDist();
-            }
-            
-            
+            setVariables(track);
             tIncPion->Fill();
         }
         
@@ -230,145 +181,25 @@ Int_t StPicoNpeAnaMaker::Make()
     for (int idx = 0; idx < aElectron->GetEntries(); ++idx)
     {
         StElectronTrack const* electron  = (StElectronTrack*)aElectron->At(idx);
-        StPicoTrack const* etrack = picoDst->track(electron->electronIdx());
+        StPicoTrack * etrack = picoDst->track(electron->electronIdx());
         if (!etrack || !isGoodElectron(etrack)) continue;
         if (!isGoodTofTrack(etrack) && !isGoodEmcTrack(etrack)) continue;
         
-        StPhysicalHelixD eHelix = etrack->dcaGeometry().helix();
-        
-        dca = eHelix.curvatureSignedDistance(pVtx.x(),pVtx.y());
-        //     dca = eHelix.geometricSignedDistance(pVtx);
-        pt = etrack->gPt();
-        eta = etrack->gMom().pseudoRapidity();
-        nsige = etrack->nSigmaElectron();
-        
-        beta = std::numeric_limits<float>::quiet_NaN();
-        e = std::numeric_limits<float>::quiet_NaN();
-        e0 = std::numeric_limits<float>::quiet_NaN();
-        e1 = std::numeric_limits<float>::quiet_NaN();
-        e2 = std::numeric_limits<float>::quiet_NaN();
-        e3 = std::numeric_limits<float>::quiet_NaN();
-        nphi = std::numeric_limits<unsigned short>::quiet_NaN();
-        neta = std::numeric_limits<unsigned short>::quiet_NaN();
-        phiDist = std::numeric_limits<float>::quiet_NaN();
-        zDist = std::numeric_limits<float>::quiet_NaN();
-        etaTowDist = std::numeric_limits<float>::quiet_NaN();
-        phiTowDist = std::numeric_limits<float>::quiet_NaN();
-        
-        if (isGoodTofTrack(etrack))  {
-            StPicoBTofPidTraits * Tof = picoDst->btofPidTraits(etrack->bTofPidTraitsIndex());
-            // start global beta calculation
-            double newBeta = Tof->btofBeta();
-            if(newBeta<1e-4 && fabs(dca)<3.) {
-                StThreeVectorF btofHitPos = Tof->btofHitPos();
-                float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
-                float tof = Tof->btof();
-                if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
-            }
-            beta = 1./newBeta;
-            // end global beta calculation
-        }
-        if (isGoodEmcTrack(etrack)) {
-            StPicoEmcPidTraits * Emc =  picoDst->emcPidTraits(etrack->emcPidTraitsIndex());
-            e = Emc->e();
-            e0 = Emc->e0();
-            e1 = Emc->e1();
-            e2 = Emc->e2();
-            e3 = Emc->e3();
-            nphi = Emc->nPhi();
-            neta = Emc->nEta();
-            phiDist = Emc->phiDist();
-            zDist = Emc->zDist();
-            etaTowDist = Emc->etaTowDist();
-            phiTowDist = Emc->phiTowDist();
-        }
+        setVariables(etrack);
         tInc->Fill();
     }
-    float const bField = picoDst->event()->bField();
     
     // Photonic Electron
     TClonesArray const * aElectronPair = mPicoNpeEvent->electronPairArray();
     for (int idx = 0; idx < aElectronPair->GetEntries(); ++idx)
     {
         // this is an example of how to get the ElectronPair pairs and their corresponsing tracks
-        StElectronPair const* epair = (StElectronPair*)aElectronPair->At(idx);
+        StElectronPair * epair = (StElectronPair*)aElectronPair->At(idx);
         if ( !isGoodPair(epair) ) continue;
-        pairMass = epair->pairMass();
-        pairDca = epair->pairDca();
-        if ( pairMass > cutsAna::pureElectronMass && pairDca > cutsAna::pureElectronDca ) continue;
+
+        setVariables(epair);
         
-        StPicoTrack const* electron = picoDst->track(epair->electronIdx());
-        StPicoTrack const* partner = picoDst->track(epair->partnerIdx());
-        
-        // calculate Lorentz vector of electron-partner pair
-        StPhysicalHelixD electronHelix = electron->dcaGeometry().helix();
-        StPhysicalHelixD partnerHelix = partner->dcaGeometry().helix();
-        pair<double,double> ss = electronHelix.pathLengths(partnerHelix);
-        StThreeVectorF const electronMomAtDca = electronHelix.momentumAt(ss.first, bField * kilogauss);
-        StThreeVectorF const partnerMomAtDca = partnerHelix.momentumAt(ss.second, bField * kilogauss);
-        StLorentzVectorF const electronFourMom(electronMomAtDca, electronMomAtDca.massHypothesis(M_ELECTRON));
-        StLorentzVectorF const partnerFourMom(partnerMomAtDca, partnerMomAtDca.massHypothesis(M_ELECTRON));
-        StLorentzVectorF const epairFourMom = electronFourMom + partnerFourMom;
-        StPhysicalHelixD eHelix = electron->dcaGeometry().helix();
-        
-        pairMass = epairFourMom.m();
-        pairAngle3d = electronMomAtDca.angle(partnerMomAtDca);
-        pairAnglePhi = fabs(electronMomAtDca.phi() - partnerMomAtDca.phi());
-        pairAngleTheta = fabs(electronMomAtDca.theta() - partnerMomAtDca.theta());
-        pairCharge = electron->charge()+partner->charge();
-        pairPositionX = epair->positionX();
-        pairPositionY = epair->positionY();
-        
-        dca = eHelix.curvatureSignedDistance(pVtx.x(),pVtx.y());
-        pt = electron->gPt();
-        partner_pt = partner->gPt();
-        eta = electron->gMom().pseudoRapidity();
-        nsige = electron->nSigmaElectron();
-        partner_nsige = partner->nSigmaElectron();
-        
-        beta = std::numeric_limits<float>::quiet_NaN();
-        e = std::numeric_limits<float>::quiet_NaN();
-        e0 = std::numeric_limits<float>::quiet_NaN();
-        e1 = std::numeric_limits<float>::quiet_NaN();
-        e2 = std::numeric_limits<float>::quiet_NaN();
-        e3 = std::numeric_limits<float>::quiet_NaN();
-        nphi = std::numeric_limits<unsigned char>::quiet_NaN();
-        neta = std::numeric_limits<unsigned char>::quiet_NaN();
-        phiDist = std::numeric_limits<float>::quiet_NaN();
-        zDist = std::numeric_limits<float>::quiet_NaN();
-        etaTowDist = std::numeric_limits<float>::quiet_NaN();
-        phiTowDist = std::numeric_limits<float>::quiet_NaN();
-        
-        if (isGoodTofTrack(electron))  {
-            StPicoBTofPidTraits * Tof = picoDst->btofPidTraits(electron->bTofPidTraitsIndex());
-            // start global beta calculation
-            double newBeta = Tof->btofBeta();
-            if(newBeta<1e-4 && fabs(dca)<3.) {
-                StThreeVectorF btofHitPos = Tof->btofHitPos();
-                float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
-                float tof = Tof->btof();
-                if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
-            }
-            beta = 1./newBeta;
-            // end global beta calculation
-        }
-        //if (electron->emcPidTraitsIndex() >= 0) {
-        if (isGoodEmcTrack(electron)) {
-            StPicoEmcPidTraits * Emc =  picoDst->emcPidTraits(electron->emcPidTraitsIndex());
-            e = Emc->e();
-            e0 = Emc->e0();
-            e1 = Emc->e1();
-            e2 = Emc->e2();
-            e3 = Emc->e3();
-            nphi = Emc->nPhi();
-            neta = Emc->nEta();
-            phiDist = Emc->phiDist();
-            zDist = Emc->zDist();
-            etaTowDist = Emc->etaTowDist();
-            phiTowDist = Emc->phiTowDist();
-        }
         if(isGoodPureElectron(epair)) tPureE->Fill();
-        //if(!isGoodTofTrack(electron) && !isGoodEmcTrack(electron)) continue;
         tPhE->Fill();
     }
     return kStOK;
@@ -536,3 +367,102 @@ void StPicoNpeAnaMaker::setTree(TTree * tree, TString opt)
     }
     else LOG_WARN << "Select tree options. (T is for track, P is for pair.)" << endm;
 }
+//-----------------------------------------------------------------------------
+void StPicoNpeAnaMaker::initVariables()
+{
+    beta = std::numeric_limits<float>::quiet_NaN();
+    e = std::numeric_limits<float>::quiet_NaN();
+    e0 = std::numeric_limits<float>::quiet_NaN();
+    e1 = std::numeric_limits<float>::quiet_NaN();
+    e2 = std::numeric_limits<float>::quiet_NaN();
+    e3 = std::numeric_limits<float>::quiet_NaN();
+    nphi = std::numeric_limits<unsigned char>::quiet_NaN();
+    neta = std::numeric_limits<unsigned char>::quiet_NaN();
+    phiDist = std::numeric_limits<float>::quiet_NaN();
+    zDist = std::numeric_limits<float>::quiet_NaN();
+    etaTowDist = std::numeric_limits<float>::quiet_NaN();
+    phiTowDist = std::numeric_limits<float>::quiet_NaN();
+}
+//-----------------------------------------------------------------------------
+void StPicoNpeAnaMaker::setVariables(StPicoTrack * track)
+{
+    initVariables();
+    
+    StThreeVectorF const pVtx = picoDst->event()->primaryVertex();
+    StPhysicalHelixD eHelix = track->dcaGeometry().helix();
+
+    // Track
+    dca = eHelix.curvatureSignedDistance(pVtx.x(),pVtx.y());
+    pt = track->gPt();
+    eta = track->gMom().pseudoRapidity();
+    
+    // PID
+    nsige = track->nSigmaElectron();
+    if (isGoodTofTrack(track))  {
+        StPicoBTofPidTraits * Tof = picoDst->btofPidTraits(track->bTofPidTraitsIndex());
+
+        // start global beta calculation
+        double newBeta = Tof->btofBeta();
+        if(newBeta<1e-4 && fabs(dca)<3.) {
+            StThreeVectorF btofHitPos = Tof->btofHitPos();
+            float L = tofPathLength(&pVtx, &btofHitPos, eHelix.curvature());
+            float tof = Tof->btof();
+            if (tof>0) newBeta = L/(tof*(C_C_LIGHT/1.e9));
+        }
+        beta = 1./newBeta;
+        // end global beta calculation
+    }
+    if (isGoodEmcTrack(track)) {
+        StPicoEmcPidTraits * Emc =  picoDst->emcPidTraits(track->emcPidTraitsIndex());
+        e = Emc->e();
+        e0 = Emc->e0();
+        e1 = Emc->e1();
+        e2 = Emc->e2();
+        e3 = Emc->e3();
+        nphi = Emc->nPhi();
+        neta = Emc->nEta();
+        phiDist = Emc->phiDist();
+        zDist = Emc->zDist();
+        etaTowDist = Emc->etaTowDist();
+        phiTowDist = Emc->phiTowDist();
+    }
+
+}
+//-----------------------------------------------------------------------------
+void StPicoNpeAnaMaker::setVariables(StElectronPair * epair)
+{
+    float const bField = picoDst->event()->bField();
+
+    pairMass = epair->pairMass();
+    pairDca = epair->pairDca();
+    
+    StPicoTrack * electron = picoDst->track(epair->electronIdx());
+    StPicoTrack * partner = picoDst->track(epair->partnerIdx());
+    
+    setVariables(electron);
+    
+    // calculate Lorentz vector of electron-partner pair
+    StPhysicalHelixD electronHelix = electron->dcaGeometry().helix();
+    StPhysicalHelixD partnerHelix = partner->dcaGeometry().helix();
+    pair<double,double> ss = electronHelix.pathLengths(partnerHelix);
+    StThreeVectorF const electronMomAtDca = electronHelix.momentumAt(ss.first, bField * kilogauss);
+    StThreeVectorF const partnerMomAtDca = partnerHelix.momentumAt(ss.second, bField * kilogauss);
+    StLorentzVectorF const electronFourMom(electronMomAtDca, electronMomAtDca.massHypothesis(M_ELECTRON));
+    StLorentzVectorF const partnerFourMom(partnerMomAtDca, partnerMomAtDca.massHypothesis(M_ELECTRON));
+    StLorentzVectorF const epairFourMom = electronFourMom + partnerFourMom;
+    StPhysicalHelixD eHelix = electron->dcaGeometry().helix();
+    
+    pairMass = epairFourMom.m();
+    pairAngle3d = electronMomAtDca.angle(partnerMomAtDca);
+    pairAnglePhi = fabs(electronMomAtDca.phi() - partnerMomAtDca.phi());
+    pairAngleTheta = fabs(electronMomAtDca.theta() - partnerMomAtDca.theta());
+    pairCharge = electron->charge()+partner->charge();
+    pairPositionX = epair->positionX();
+    pairPositionY = epair->positionY();
+    
+    partner_pt = partner->gPt();
+    partner_nsige = partner->nSigmaElectron();
+
+}
+
+

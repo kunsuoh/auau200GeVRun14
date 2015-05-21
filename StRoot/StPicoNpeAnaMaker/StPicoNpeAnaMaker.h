@@ -27,6 +27,7 @@ class StElectronTrack;
 class StElectronPair;
 class StPicoDstMaker;
 class StPicoTrack;
+class StPicoDst;
 
 class StPicoNpeAnaMaker : public StMaker
 {
@@ -55,11 +56,14 @@ class StPicoNpeAnaMaker : public StMaker
     bool isGoodPureElectron(StElectronPair const*) const;
     bool isGoodEvent() const;
     void setTree(TTree *, TString);
+    void initVariables();
+    void setVariables(StPicoTrack *);
+    void setVariables(StElectronPair *);
 
-    
     StPicoDstMaker* mPicoDstMaker;
     StPicoNpeEvent* mPicoNpeEvent;
-
+    StPicoDst * picoDst;
+    
     TString mOutFileName;
     TString mInputFileList;
     TFile* mOutputFile;
