@@ -74,10 +74,15 @@ Int_t StPicoNpeAnaMaker::Init()
     double maxs[4] = {1, 10,     13,  0.6};
     hsTrackPid = new THnSparseF("hsTrackPid", "hsTrackPid", 4, bins, mins, maxs);
     
-    setTree(tIncPion,"T","tIncPion","tree for Pion form PicoDst");
-    setTree(tInc,"T","tInc","tree for Inclusive Elctron");
-    setTree(tPhE,"P","tPhE","tree for Photonic Elctron");
-    setTree(tPureE,"P","tPureE","tree for Pure Elctron");
+    tIncPion = new TTree("tIncPion","tree for Pion form PicoDst");
+    tInc = new TTree("tIncPion","tree for Pion form PicoDst");
+    tPhE = new TTree("tIncPion","tree for Pion form PicoDst");
+    tPureE = new TTree("tIncPion","tree for Pion form PicoDst");
+
+    setTree(tIncPion,"T");
+    setTree(tInc,"T");
+    setTree(tPhE,"P");
+    setTree(tPureE,"P");
     
     return kStOK;
 }
@@ -474,10 +479,8 @@ bool StPicoNpeAnaMaker::isGoodEmcTrack(StPicoTrack const * const trk) const
     ;
 }
 //-----------------------------------------------------------------------------
-void StPicoNpeAnaMaker::setTree(TTree * tree, TString opt, TString name, TString comment) const
+void StPicoNpeAnaMaker::setTree(TTree * tree, TString opt) const
 {
-    tree = new TTree(name.Data(),comment.Data());
-
     if (opt=="T") {
         tree->Branch("dca",&dca,"dca/F");
         tree->Branch("pt",&pt,"pt/F");
