@@ -243,7 +243,7 @@ Int_t StPicoNpeAnaMaker::Make()
         LOG_ERROR <<" eventId() " << mPicoNpeEvent->eventId() << " " << picoDst->event()->eventId()  <<endm;
         LOG_ERROR <<" StPicoNpeAnaMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!"<<endm;
         LOG_ERROR <<" StPicoNpeAnaMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoEvent and StPicoNpeEvent are not in sync."<<endm;
-        return kStWarn;
+        exit(1);
     }
     hEvent->Fill(3);
     
